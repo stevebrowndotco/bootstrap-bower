@@ -1223,6 +1223,19 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
             uid: scope.uniqueId + '-' + i
           });
         }
+        
+       	// disable navigation according to the range (maxDate and minDate)
+        // compare minDate with the first day of the month 
+        var calendarMinDate = new Date(firstDayOfMonth.getTime());
+        calendarMinDate.setHours(0);
+        // if the first day of the month is not greater then minDate there is no point to navigate to a previous month
+        scope.navPrevDisabled = ctrl.minDate && (calendarMinDate <= ctrl.minDate);
+        // compare maxDate with the first day of the next month
+        var calendarMaxDate = new Date(firstDayOfMonth.getTime());
+        calendarMaxDate.setHours(0);
+        calendarMaxDate.setMonth(calendarMaxDate.getMonth() + 1);
+        // if the first day of the next month is greater then maxDate there is no point to navigate to the next month
+        scope.navNextDisabled = calendarMaxDate > ctrl.maxDate;
 
         scope.labels = new Array(7);
         for (var j = 0; j < 7; j++) {
